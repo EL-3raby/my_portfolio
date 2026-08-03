@@ -1,0 +1,148 @@
+.section {
+  padding: var(--section-padding);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  margin: 2rem;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 2rem;
+}
+
+.leftCol {
+  position: relative;
+}
+
+.rightCol {
+  max-width: 400px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.2rem 1rem;
+  border-bottom: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  border-radius: 16px;
+}
+
+.listItem:hover {
+  background-color: var(--background-color);
+  transform: translateX(6px);
+}
+
+.list:hover .listItem:not(:hover) {
+  opacity: 0.35;
+}
+
+.companyInfo {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.index {
+  font-size: 0.95rem;
+  color: var(--accent-color);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.companyInfo h4 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-color);
+  letter-spacing: -0.01em;
+}
+
+.roleInfo {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.role {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.date {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.floatingPreview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 180px;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  border: 2px solid var(--glass-border);
+  background-color: #111111;
+}
+
+.previewCard {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 868px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .listItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .roleInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+  
+  .floatingPreview {
+    display: none !important;
+  }
+}

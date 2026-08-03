@@ -1,0 +1,131 @@
+.section {
+  padding: var(--section-padding);
+}
+
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem {
+  border-bottom: 1px solid var(--glass-border);
+  padding: 2rem 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.listItem:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemHeader h4 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.arrow {
+  font-size: 1.8rem;
+  transition: transform 0.3s ease;
+  color: var(--accent-color);
+}
+
+.listItem:hover .arrow {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.itemContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+  margin-top: 0;
+}
+
+.itemContent.expanded {
+  max-height: 280px;
+  opacity: 1;
+  margin-top: 2rem;
+  padding: 1.8rem 2rem;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.itemContent p {
+  flex: 1;
+  font-size: 1.1rem;
+  max-width: 440px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.previewImage {
+  width: 320px;
+  height: 190px;
+  background-color: #111;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.75) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem 1.2rem;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  transition: background 0.3s ease;
+}
+
+.previewImage:hover .imageOverlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+@media (max-width: 868px) {
+  .itemHeader h4 {
+    font-size: 1.6rem;
+  }
+  
+  .itemContent.expanded {
+    flex-direction: column;
+    max-height: 600px;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.2rem;
+  }
+  
+  .previewImage {
+    width: 100%;
+    height: 180px;
+  }
+}

@@ -1,26 +1,120 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background-color: #ffffff;
+  --text-color: #111111;
+  --text-muted: #555555;
+  --accent-color: #111111;
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --card-bg: #ffffff;
+  --section-padding: 8rem 2rem;
+  --border-radius: 24px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --text-muted: #aaaaaa;
+    --accent-color: #ffffff;
+    --nav-bg: rgba(18, 18, 18, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --card-bg: #1e1e1e;
   }
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  scroll-behavior: smooth;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cloud-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-image: url('/clouds.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  filter: grayscale(100%) contrast(1.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .cloud-bg {
+    opacity: 0.15;
+    filter: grayscale(100%) invert(100%);
+  }
+}
+
+/* Typography Utilities */
+.heading-large {
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.heading-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--text-color);
+}
+
+.heading-filled {
+  color: var(--text-color);
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pill-button {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  padding: 0.8rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pill-button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
 }
