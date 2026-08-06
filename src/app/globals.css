@@ -135,9 +135,9 @@ button {
     margin-bottom: 2rem;
   }
 
-  /* 44 px minimum touch targets for all interactive elements */
+  /* 44 px minimum touch targets for interactive links & buttons */
   a,
-  button {
+  button:not([class*="Dot"]):not([class*="dot"]):not([class*="Icon"]):not([class*="icon"]) {
     min-height: 44px;
     display: inline-flex;
     align-items: center;

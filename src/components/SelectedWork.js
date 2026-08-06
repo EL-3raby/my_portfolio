@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { FiGrid, FiLayers, FiCpu, FiExternalLink, FiGithub } from 'react-icons/fi';
 import styles from './SelectedWork.module.css';
 
 export const fallbackProjects = [
@@ -11,10 +13,10 @@ export const fallbackProjects = [
     id: '1',
     title: 'BloomCare - Mental Health & Wellness Platform',
     type: 'Web Application',
-    tech: 'Next.js • Node.js • MongoDB',
     category: 'Full Stack',
     description: 'A full-stack mental health platform featuring real-time chat, therapist booking, and automated wellness tracking.',
-    link: '#',
+    liveUrl: 'https://example.com',
+    github: 'https://github.com',
     featuredOrder: 1,
     isFeatured: true
   },
@@ -22,10 +24,10 @@ export const fallbackProjects = [
     id: '2',
     title: 'VisionAI - Real-Time Object Detection & Tracking',
     type: 'Computer Vision',
-    tech: 'PyTorch • OpenCV • FastAPI',
     category: 'ML Engineering',
     description: 'High-throughput computer vision pipeline for real-time video stream analysis and object tracking with low latency.',
-    link: '#',
+    liveUrl: 'https://example.com',
+    github: 'https://github.com',
     featuredOrder: 2,
     isFeatured: true
   },
@@ -33,10 +35,10 @@ export const fallbackProjects = [
     id: '3',
     title: 'Spenso - Financial Analytics & Budgeting Suite',
     type: 'SaaS Platform',
-    tech: 'React • Express • PostgreSQL',
     category: 'Full Stack',
     description: 'Comprehensive financial dashboard with interactive data visualization, multi-currency support, and automated expense categorization.',
-    link: '#',
+    liveUrl: 'https://example.com',
+    github: 'https://github.com',
     featuredOrder: 3,
     isFeatured: true
   },
@@ -44,16 +46,17 @@ export const fallbackProjects = [
     id: '4',
     title: 'NeuroText - Custom LLM RAG & Fine-Tuning Pipeline',
     type: 'Generative AI / NLP',
-    tech: 'LangChain • HuggingFace • Python',
     category: 'ML Engineering',
     description: 'Domain-specific Retrieval-Augmented Generation (RAG) system with custom embeddings and fine-tuned LLM models.',
-    link: '#',
+    liveUrl: 'https://example.com',
+    github: 'https://github.com',
     featuredOrder: 4,
     isFeatured: true
   }
 ];
 
 export default function SelectedWork() {
+  const router = useRouter();
   const [activeFilter, setActiveFilter] = useState('All');
   const [projects, setProjects] = useState([]);
 
@@ -81,6 +84,77 @@ export default function SelectedWork() {
   const filteredProjects = activeFilter === 'All'
     ? projects.filter(p => p.isFeatured !== false).slice(0, 4)
     : projects.filter(p => p.category === activeFilter);
+
+  const renderCardContent = (project) => {
+    const liveLink = (project.liveUrl || project.demoUrl || project.link || project.demo || project.url);
+    const githubLink = (project.githubUrl || project.github || project.githubLink || project.repoUrl);
+    const hasLive = liveLink && liveLink !== '#' && liveLink !== '';
+    const hasGithub = githubLink && githubLink !== '#' && githubLink !== '';
+
+    return (
+      <div
+        className={styles.card}
+        onClick={(e) => {
+          if (e.target.closest('a')) return;
+          router.push(`/work/${project.id}`);
+        }}
+      >
+        <div className={styles.imageContainer}>
+          {project.coverImage || project.imageUrl ? (
+            <img
+              src={project.coverImage || project.imageUrl}
+              alt={project.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              <span>{project.title}</span>
+            </div>
+          )}
+          <div className={styles.badge}>
+            {project.category?.toUpperCase() || 'FULL STACK'}
+          </div>
+        </div>
+
+        <div className={styles.cardContent}>
+          <h4>{project.title}</h4>
+
+          <div className={styles.cardMetaRow}>
+            {project.type && <span className={styles.typeTag}>{project.type}</span>}
+
+            {(hasLive || hasGithub) && (
+              <div className={styles.cardActions}>
+                {hasLive && (
+                  <a
+                    href={liveLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.iconLinkBtn}
+                    title="Live Demo / Website"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FiExternalLink size={15} />
+                  </a>
+                )}
+                {hasGithub && (
+                  <a
+                    href={githubLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.iconLinkBtn}
+                    title="GitHub Repository"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FiGithub size={15} />
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <section className={styles.section} id="work">
@@ -128,18 +202,28 @@ export default function SelectedWork() {
           <Link href="/work" className={styles.viewAll}>View All Work ↗</Link>
         </motion.div>
 
-        {/* ── Mobile filter: compact dropdown + view-all ── */}
+        {/* ── Mobile filter: Custom Pill Chips + View All ── */}
         <div className={styles.mobileFilterRow}>
-          <select
-            className={styles.mobileSelect}
-            value={activeFilter}
-            onChange={e => setActiveFilter(e.target.value)}
-            aria-label="Filter projects"
-          >
-            <option value="All">All Projects</option>
-            <option value="Full Stack">Full Stack</option>
-            <option value="ML Engineering">ML Engineering</option>
-          </select>
+          <div className={styles.mobileChipsScroll}>
+            {[
+              { id: 'All', label: 'All Projects', icon: FiGrid },
+              { id: 'Full Stack', label: 'Full Stack', icon: FiLayers },
+              { id: 'ML Engineering', label: 'ML Engineering', icon: FiCpu }
+            ].map((opt) => {
+              const Icon = opt.icon;
+              const isActive = activeFilter === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  className={[styles.chipBtn, isActive && styles.chipActive].filter(Boolean).join(' ')}
+                  onClick={() => setActiveFilter(opt.id)}
+                >
+                  <Icon size={14} />
+                  <span>{opt.label}</span>
+                </button>
+              );
+            })}
+          </div>
           <Link href="/work" className={styles.mobileViewAll}>View All ↗</Link>
         </div>
 
@@ -147,40 +231,16 @@ export default function SelectedWork() {
         <motion.div layout className={`${styles.grid} ${styles.desktopGrid}`}>
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
-              <Link href={`/work/${project.id}`} key={project.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <motion.div
-                  className={styles.card}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className={styles.imageContainer}>
-                    {project.coverImage || project.imageUrl ? (
-                      <img
-                        src={project.coverImage || project.imageUrl}
-                        alt={project.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div className={styles.imagePlaceholder}>
-                        <span>{project.title}</span>
-                      </div>
-                    )}
-                    <div className={styles.badge}>
-                      {project.category?.toUpperCase() || 'FULL STACK'}
-                    </div>
-                  </div>
-                  <div className={styles.cardContent}>
-                    <h4>{project.title}</h4>
-                    <div className={styles.meta}>
-                      <span>{project.type}</span>
-                      <span>{project.tech}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              </Link>
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
+              >
+                {renderCardContent(project)}
+              </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
@@ -188,38 +248,9 @@ export default function SelectedWork() {
         {/* ── Mobile horizontal carousel ── */}
         <div className={styles.mobileCarousel}>
           {filteredProjects.map((project) => (
-            <Link
-              href={`/work/${project.id}`}
-              key={`m-${project.id}`}
-              className={styles.carouselSlide}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              <div className={styles.card}>
-                <div className={styles.imageContainer}>
-                  {project.coverImage || project.imageUrl ? (
-                    <img
-                      src={project.coverImage || project.imageUrl}
-                      alt={project.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  ) : (
-                    <div className={styles.imagePlaceholder}>
-                      <span>{project.title}</span>
-                    </div>
-                  )}
-                  <div className={styles.badge}>
-                    {project.category?.toUpperCase() || 'FULL STACK'}
-                  </div>
-                </div>
-                <div className={styles.cardContent}>
-                  <h4>{project.title}</h4>
-                  <div className={styles.meta}>
-                    <span>{project.type}</span>
-                    <span>{project.tech}</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <div key={`m-${project.id}`} className={styles.carouselSlide}>
+              {renderCardContent(project)}
+            </div>
           ))}
         </div>
       </div>

@@ -152,12 +152,14 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px !important;
+  max-height: 44px !important;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(18, 18, 18, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -168,42 +170,62 @@
 }
 
 .sliderArrow:hover {
-  background: rgba(255, 255, 255, 0.3);
-  scale: 1.08;
+  background: rgba(18, 18, 18, 0.9);
+  border-color: rgba(20, 184, 166, 0.6);
+  box-shadow: 0 0 16px rgba(20, 184, 166, 0.3);
+}
+
+.sliderArrow:active {
+  transform: translateY(-50%) scale(0.94);
 }
 
 .sliderArrow.prev {
-  left: 1.5rem;
+  left: 1rem;
 }
 
 .sliderArrow.next {
-  right: 1.5rem;
+  right: 1rem;
 }
 
 .indicators {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 1.2rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.5rem;
   z-index: 10;
+  padding: 0.4rem 0.8rem;
+  background: rgba(18, 18, 18, 0.65);
+  backdrop-filter: blur(12px);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .indicatorDot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
+  min-height: 8px !important;
+  max-height: 8px !important;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.35);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+  display: block;
 }
 
 .indicatorDot.activeDot {
-  width: 28px;
+  width: 22px;
+  height: 8px;
+  min-height: 8px !important;
+  max-height: 8px !important;
   border-radius: 9999px;
   background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
 /* Content Grid & Layout */
