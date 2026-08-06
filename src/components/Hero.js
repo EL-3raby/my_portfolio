@@ -133,14 +133,18 @@ export default function Hero() {
 
       {/* ── Mobile: Vertical Stack ── */}
       <div className={styles.mobileLayout}>
-        {/* 1. Profile image — always visible, no scroll trigger */}
+        {/* 1. Profile image — enlarged, floating animation & ambient glow */}
         <motion.div
           className={styles.mobileImageWrap}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, scale: 0.85, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <img src="/profile.png" alt="Ahmed Elaraby" className={styles.mobileProfileImage} />
+          <div className={styles.mobileBadge}>
+            <span className={styles.mobileStatusDot} />
+            <span>Available for Projects</span>
+          </div>
         </motion.div>
 
         {/* 2. Name */}
