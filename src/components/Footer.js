@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { formatCTAUrl } from '@/lib/formatCTA';
 import { 
   FiMail, 
   FiMessageCircle, 
@@ -43,7 +44,8 @@ export default function Footer() {
     }
   }, []);
 
-  const contactHref = settings.whatsapp || settings.messageLink || (settings.email?.includes('@') ? `mailto:${settings.email}` : (settings.email || '#contact'));
+  const rawContact = settings.whatsapp || settings.collaborateLink || settings.messageLink || (settings.email?.includes('@') ? `mailto:${settings.email}` : (settings.email || '#contact'));
+  const contactHref = formatCTAUrl(rawContact);
   const isExternal = contactHref.startsWith('http://') || contactHref.startsWith('https://') || contactHref.startsWith('mailto:');
 
   return (

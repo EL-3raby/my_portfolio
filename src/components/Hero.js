@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { formatCTAUrl } from '@/lib/formatCTA';
 import { FiDribbble, FiInstagram, FiLinkedin, FiPenTool, FiArrowUpRight, FiGithub } from 'react-icons/fi';
 import styles from './Hero.module.css';
 
@@ -11,20 +12,22 @@ export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
   const [settings, setSettings] = useState({
     heroTitle: 'Full Stack & Machine Learning Engineer',
-    heroDescription: 'Engineering scalable web applications, intelligent AI models, and high-performance digital products.'
+    heroDescription: 'Engineering scalable web applications, intelligent AI models, and high-performance digital products.',
+    whatsapp: '',
+    collaborateLink: '#contact'
   });
 
   // Track mobile viewport
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setHasScrolled(window.scrollY > 20);
+      setHasScrolled(window.scrollY > 80);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -46,7 +49,8 @@ export default function Hero() {
   // On mobile: always show image. On desktop: respect scroll trigger.
   const imageVisible = isMobile ? true : hasScrolled;
 
-  const talkHref = settings.whatsapp || settings.collaborateLink || '#contact';
+  const rawLink = settings.whatsapp || settings.collaborateLink || '#contact';
+  const talkHref = formatCTAUrl(rawLink);
   const talkIsExternal = talkHref.startsWith('http') || talkHref.startsWith('mailto:');
 
   return (

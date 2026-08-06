@@ -166,22 +166,13 @@ function WorkContent() {
         <div className={styles.titleArea}>
           <motion.h1 
             className="heading-large heading-outline" 
-            style={{ opacity: 0.15, fontSize: 'clamp(3rem, 9vw, 7rem)' }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 0.15, y: 0 }}
+            style={{ textAlign: 'center' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             WORK & PROJECTS
           </motion.h1>
-          <motion.h2 
-            className="section-title" 
-            style={{ marginTop: '-3rem' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            /EXPLORE ALL TRACKS
-          </motion.h2>
         </div>
 
         {/* Filter Navigation */}

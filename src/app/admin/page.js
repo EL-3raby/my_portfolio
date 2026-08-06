@@ -16,6 +16,7 @@ import {
   orderBy 
 } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
+import { formatCTAUrl } from '@/lib/formatCTA';
 import Link from 'next/link';
 import { 
   FiFolder, 
@@ -1182,13 +1183,26 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
                 <div className={styles.field}>
-                  <label className={styles.label}>🚀 "Let's Talk / Collaborate" CTA Link</label>
+                  <label className={styles.label}>🇪🇬 🚀 "Let's Talk / Collaborate" CTA Link (Egyptian Phone / WhatsApp)</label>
                   <div className={styles.inputWithClear}>
-                    <input type="text" className={styles.input} placeholder="https://wa.me/... or #contact" value={settingsData.collaborateLink || ''} onChange={(e) => setSettingsData({...settingsData, collaborateLink: e.target.value})} />
+                    <input
+                      type="text"
+                      className={styles.input}
+                      placeholder="01xxxxxxxxx (رقم تليفون مصري) or https://wa.me/... or #contact"
+                      value={settingsData.collaborateLink || ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        const formatted = formatCTAUrl(val);
+                        setSettingsData({...settingsData, collaborateLink: formatted});
+                      }}
+                    />
                     {settingsData.collaborateLink && (
                       <button type="button" className={styles.clearFieldBtn} onClick={() => setSettingsData({...settingsData, collaborateLink: ''})} title="Clear Link">×</button>
                     )}
                   </div>
+                  <small style={{ color: 'var(--accent-color)', fontSize: '0.78rem', marginTop: '0.35rem', display: 'block', opacity: 0.9 }}>
+                    💡 اكتب رقم التليفون المصري مباشرة (مثال: 01012345678) وسيقوم النظام تلقائياً بتحويله لرابط واتساب مباشر 🚀
+                  </small>
                 </div>
               </div>
 

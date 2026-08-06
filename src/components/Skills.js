@@ -297,16 +297,27 @@ export default function Skills() {
                       />
                     </button>
 
-                    {isOpen && (
-                      <div className={styles.accordionBody}>
-                        {cat.skills.map((skill, sIdx) => (
-                          <div key={`${key}-${skill}-${sIdx}`} className={styles.skillPill}>
-                            <FiCheckCircle size={13} />
-                            <span>{skill}</span>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          key={`body-${key}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <div className={styles.accordionBody}>
+                            {cat.skills.map((skill, sIdx) => (
+                              <div key={`${key}-${skill}-${sIdx}`} className={styles.skillPill}>
+                                <FiCheckCircle size={13} />
+                                <span>{skill}</span>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 );
               })}

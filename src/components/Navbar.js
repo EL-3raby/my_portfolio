@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { formatCTAUrl } from '@/lib/formatCTA';
 import { FiArrowUpRight, FiX, FiMenu } from 'react-icons/fi';
 import styles from './Navbar.module.css';
 
@@ -46,7 +47,8 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [drawerOpen]);
 
-  const talkHref = settings.whatsapp || settings.collaborateLink || '#contact';
+  const rawLink = settings.whatsapp || settings.collaborateLink || '#contact';
+  const talkHref = formatCTAUrl(rawLink);
   const isExternal = talkHref.startsWith('http://') || talkHref.startsWith('https://') || talkHref.startsWith('mailto:');
 
   const navLinks = [

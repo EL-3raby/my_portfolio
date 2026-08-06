@@ -148,6 +148,18 @@
   }
 }
 
+@keyframes mobileDotPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(20, 184, 166, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0);
+  }
+}
+
 /* ─── Mobile: vertical timeline ────────────────────────────────── */
 @media (max-width: 768px) {
   .section {
@@ -194,7 +206,7 @@
     opacity: 1;
   }
 
-  /* Timeline dot */
+  /* Timeline dot with glowing pulse on mobile */
   .listItem::before {
     content: '';
     position: absolute;
@@ -205,7 +217,7 @@
     border-radius: 50%;
     background-color: var(--accent-color);
     border: 2px solid var(--card-bg);
-    box-shadow: 0 0 0 2px var(--accent-color);
+    animation: mobileDotPulse 2.5s infinite;
     flex-shrink: 0;
   }
 
