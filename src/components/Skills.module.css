@@ -8,6 +8,7 @@
   margin: 0 auto;
 }
 
+/* ─── Desktop tab nav ─────────────────────────────────────────── */
 .tabNav {
   display: flex;
   justify-content: center;
@@ -28,6 +29,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
 }
 
 .tabBtn:hover,
@@ -38,6 +40,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* ─── Desktop grid ─────────────────────────────────────────────── */
 .tracksGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -83,6 +86,7 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 .trackTitle {
@@ -132,7 +136,7 @@
   font-weight: 600;
   border: 1px solid var(--glass-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  transition: all 0.25 ease;
+  transition: all 0.25s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -147,5 +151,164 @@
 @media (max-width: 992px) {
   .tracksGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Mobile utilities ─────────────────────────────────────────── */
+.mobileSegmented {
+  display: none;
+}
+
+.mobileAccordion {
+  display: none;
+}
+
+/* ─── Mobile breakpoint ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Hide desktop elements */
+  .desktopTabNav,
+  .desktopGrid {
+    display: none !important;
+  }
+
+  /* Two-button full-width segmented control */
+  .mobileSegmented {
+    display: flex;
+    background-color: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 5px;
+    gap: 5px;
+    margin-bottom: 2rem;
+  }
+
+  .segBtn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.65rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-height: 44px;
+    white-space: nowrap;
+  }
+
+  .segBtnActive {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Mobile accordion */
+  .mobileAccordion {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .accordionTrack {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .accordionTrackHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.2rem 1.2rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .iconCircle {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+
+  .accordionTrackName {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.2rem;
+  }
+
+  .accordionItem {
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .accordionHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    min-height: 52px;
+    text-align: left;
+    transition: background-color 0.2s ease;
+  }
+
+  .accordionHeader:active {
+    background-color: var(--background-color);
+  }
+
+  .accordionHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    flex: 1;
+  }
+
+  .accordionChevron {
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .accordionChevronOpen {
+    transform: rotate(180deg);
+  }
+
+  .accordionBody {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding: 0.75rem 1.2rem 1.2rem;
+    border-top: 1px solid var(--glass-border);
+    background-color: var(--background-color);
+  }
+
+  .accordionBody .skillPill {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.9rem;
+  }
+
+  .accordionBody .skillPill:hover {
+    transform: none;
+  }
+
+  .accordionBody .skillPill:active {
+    background-color: var(--accent-color);
+    color: var(--background-color);
   }
 }

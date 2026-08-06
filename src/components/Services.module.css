@@ -27,6 +27,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
 
 .itemHeader h4 {
@@ -37,6 +38,14 @@
   letter-spacing: -0.01em;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Desktop: show arrow, hide chevron */
 .arrow {
   font-size: 1.8rem;
   transition: transform 0.3s ease;
@@ -47,6 +56,18 @@
   transform: rotate(45deg) scale(1.1);
 }
 
+.chevron {
+  display: none; /* shown only on mobile */
+  color: var(--accent-color);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ─── Expandable content ──────────────────────────────────────── */
 .itemContent {
   display: flex;
   justify-content: space-between;
@@ -76,6 +97,11 @@
   max-width: 440px;
   line-height: 1.6;
   color: var(--text-muted);
+}
+
+.previewImageLink {
+  display: block;
+  flex-shrink: 0;
 }
 
 .previewImage {
@@ -111,21 +137,70 @@
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.85) 100%);
 }
 
-@media (max-width: 868px) {
+/* ─── Mobile ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .list {
+    gap: 1rem;
+  }
+
+  .listItem {
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.1rem 1.2rem;
+    background-color: var(--card-bg);
+    transition: background-color 0.2s ease;
+  }
+
+  .listItem:hover {
+    background-color: var(--card-bg);
+  }
+
+  .listItem:active {
+    background-color: var(--background-color);
+  }
+
+  .itemHeader {
+    min-height: 44px;
+    padding: 0.2rem 0;
+  }
+
   .itemHeader h4 {
-    font-size: 1.6rem;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    flex: 1;
+    padding-right: 0.75rem;
   }
-  
+
+  /* Hide desktop arrow, show chevron on mobile */
+  .arrow {
+    display: none;
+  }
+
+  .chevron {
+    display: flex;
+  }
+
   .itemContent.expanded {
-    flex-direction: column;
     max-height: 600px;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 1.2rem;
+    gap: 1.2rem;
+    padding: 1rem;
+    margin-top: 1rem;
   }
-  
+
+  .itemContent p {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .previewImageLink {
+    width: 100%;
+  }
+
   .previewImage {
     width: 100%;
-    height: 180px;
+    height: 160px;
   }
 }

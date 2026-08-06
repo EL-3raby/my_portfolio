@@ -61,11 +61,59 @@ export default function Certifications() {
 
   const currentCerts = certifications.length > 0 ? certifications : fallbackCertificates;
 
+  const renderCard = (cert, index, keyPrefix = '') => {
+    const skillsArray = Array.isArray(cert.skills)
+      ? cert.skills
+      : (cert.skillsText ? cert.skillsText.split(',').map(s => s.trim()).filter(Boolean) : []);
+
+    return (
+      <div key={`${keyPrefix}${cert.id}`} className={styles.card}>
+        <div>
+          <div className={styles.cardHeader}>
+            <div className={styles.badgeIcon}>
+              {cert.image ? (
+                <img src={cert.image} alt={cert.issuer} />
+              ) : (
+                <FiAward />
+              )}
+            </div>
+            {cert.date && <span className={styles.dateBadge}>{cert.date}</span>}
+          </div>
+
+          <h4 className={styles.certTitle}>{cert.title}</h4>
+          <div className={styles.issuer}>{cert.issuer}</div>
+
+          {skillsArray.length > 0 && (
+            <div className={styles.tags}>
+              {skillsArray.map((skill, sIdx) => (
+                <span key={sIdx} className={styles.tag}>
+                  <FiCheckCircle size={10} style={{ marginRight: '4px' }} />
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className={styles.cardFooter}>
+          <a
+            href={cert.credentialUrl || cert.url || '#'}
+            target={(cert.credentialUrl || cert.url || '').startsWith('http') ? '_blank' : '_self'}
+            rel={(cert.credentialUrl || cert.url || '').startsWith('http') ? 'noreferrer' : undefined}
+            className={styles.verifyBtn}
+          >
+            Verify Credential <FiArrowUpRight size={16} />
+          </a>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className={styles.section} id="certifications">
       <div className={styles.container}>
-        <motion.h2 
-          className="heading-large heading-outline" 
+        <motion.h2
+          className="heading-large heading-outline"
           style={{ textAlign: 'center', opacity: 0.15 }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 0.15 }}
@@ -74,8 +122,8 @@ export default function Certifications() {
         >
           HONORS & CERTIFICATES
         </motion.h2>
-        <motion.h3 
-          className="section-title" 
+        <motion.h3
+          className="section-title"
           style={{ textAlign: 'center', marginTop: '-3.5rem' }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -85,61 +133,28 @@ export default function Certifications() {
           /CERTIFICATIONS & LICENSES
         </motion.h3>
 
-        <div className={styles.grid}>
-          {currentCerts.map((cert, index) => {
-            const skillsArray = Array.isArray(cert.skills) 
-              ? cert.skills 
-              : (cert.skillsText ? cert.skillsText.split(',').map(s => s.trim()).filter(Boolean) : []);
+        {/* ── Desktop grid ── */}
+        <div className={`${styles.grid} ${styles.desktopGrid}`}>
+          {currentCerts.map((cert, index) => (
+            <motion.div
+              key={cert.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              {renderCard(cert, index)}
+            </motion.div>
+          ))}
+        </div>
 
-            return (
-              <motion.div 
-                key={cert.id}
-                className={styles.card}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div>
-                  <div className={styles.cardHeader}>
-                    <div className={styles.badgeIcon}>
-                      {cert.image ? (
-                        <img src={cert.image} alt={cert.issuer} />
-                      ) : (
-                        <FiAward />
-                      )}
-                    </div>
-                    {cert.date && <span className={styles.dateBadge}>{cert.date}</span>}
-                  </div>
-
-                  <h4 className={styles.certTitle}>{cert.title}</h4>
-                  <div className={styles.issuer}>{cert.issuer}</div>
-
-                  {skillsArray.length > 0 && (
-                    <div className={styles.tags}>
-                      {skillsArray.map((skill, sIdx) => (
-                        <span key={sIdx} className={styles.tag}>
-                          <FiCheckCircle size={10} style={{ marginRight: '4px' }} />
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.cardFooter}>
-                  <a 
-                    href={cert.credentialUrl || cert.url || '#'} 
-                    target={(cert.credentialUrl || cert.url || '').startsWith('http') ? '_blank' : '_self'}
-                    rel={(cert.credentialUrl || cert.url || '').startsWith('http') ? 'noreferrer' : undefined}
-                    className={styles.verifyBtn}
-                  >
-                    Verify Credential <FiArrowUpRight size={16} />
-                  </a>
-                </div>
-              </motion.div>
-            );
-          })}
+        {/* ── Mobile horizontal carousel ── */}
+        <div className={styles.mobileCarousel}>
+          {currentCerts.map((cert, index) => (
+            <div key={`m-${cert.id}`} className={styles.carouselSlide}>
+              {renderCard(cert, index, 'm-')}
+            </div>
+          ))}
         </div>
       </div>
     </section>

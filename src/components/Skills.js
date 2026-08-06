@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { 
-  FiLayers, 
-  FiCpu, 
-  FiCode, 
-  FiCheckCircle, 
-  FiGrid 
+import {
+  FiLayers,
+  FiCpu,
+  FiCode,
+  FiCheckCircle,
+  FiGrid,
+  FiChevronDown
 } from 'react-icons/fi';
 import styles from './Skills.module.css';
 
@@ -67,6 +68,20 @@ export default function Skills() {
   const [activeTab, setActiveTab] = useState('all');
   const [skillsData, setSkillsData] = useState([]);
   const [isMounted, setIsMounted] = useState(false);
+  // Accordion state: Set of "trackId-catId" keys
+  const [openCategories, setOpenCategories] = useState(new Set());
+
+  const toggleCategory = (key) => {
+    setOpenCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -74,28 +89,22 @@ export default function Skills() {
       const unsub = onSnapshot(collection(db, 'skills'), (snapshot) => {
         if (!snapshot.empty) {
           const docs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-          
-          // Merge and deduplicate categories cleanly
+
           const processTrackCategories = (firestoreDocs, trackId, fallbackCats) => {
             const categoryMap = new Map();
-
-            // Seed with fallback categories first to preserve rich default skills
             fallbackCats.forEach(cat => {
               categoryMap.set(cat.name.toLowerCase().trim(), { ...cat });
             });
-
             const matchingDocs = firestoreDocs.filter(d => d.trackId === trackId);
             matchingDocs.forEach((docItem, idx) => {
               if (!docItem.categoryName) return;
               const key = docItem.categoryName.toLowerCase().trim();
-
               let parsedSkills = [];
               if (Array.isArray(docItem.skills) && docItem.skills.length > 0) {
                 parsedSkills = docItem.skills;
               } else if (typeof docItem.skillsText === 'string' && docItem.skillsText.trim().length > 0) {
                 parsedSkills = docItem.skillsText.split(',').map(s => s.trim()).filter(Boolean);
               }
-
               const existing = categoryMap.get(key);
               categoryMap.set(key, {
                 id: docItem.id || `cat-${trackId}-${idx}`,
@@ -103,14 +112,13 @@ export default function Skills() {
                 skills: parsedSkills.length > 0 ? parsedSkills : (existing?.skills || ['Engineering'])
               });
             });
-
             return Array.from(categoryMap.values());
           };
 
           const fullstackCats = processTrackCategories(docs, 'fullstack', fallbackSkills[0].categories);
           const mlCats = processTrackCategories(docs, 'ml', fallbackSkills[1].categories);
 
-          const formattedTracks = [
+          setSkillsData([
             {
               id: 'track-fs',
               trackId: 'fullstack',
@@ -125,9 +133,7 @@ export default function Skills() {
               subtitle: 'Deep learning pipelines, Generative AI & real-time inference',
               categories: mlCats
             }
-          ];
-
-          setSkillsData(formattedTracks);
+          ]);
         } else {
           setSkillsData(fallbackSkills);
         }
@@ -135,7 +141,6 @@ export default function Skills() {
         console.log('Skills snapshot note:', err);
         setSkillsData(fallbackSkills);
       });
-
       return () => unsub();
     } catch (err) {
       console.log('Using fallback skills:', err);
@@ -144,8 +149,8 @@ export default function Skills() {
   }, []);
 
   const currentSkills = skillsData.length > 0 ? skillsData : fallbackSkills;
-  const filteredTracks = activeTab === 'all' 
-    ? currentSkills 
+  const filteredTracks = activeTab === 'all'
+    ? currentSkills
     : currentSkills.filter(t => t.trackId === activeTab);
 
   const gridClassName = `${styles.tracksGrid}${activeTab !== 'all' ? ` ${styles.singleTrackGrid}` : ''}`;
@@ -153,8 +158,8 @@ export default function Skills() {
   return (
     <section className={styles.section} id="skills">
       <div className={styles.container}>
-        <motion.h2 
-          className="heading-large heading-outline" 
+        <motion.h2
+          className="heading-large heading-outline"
           style={{ textAlign: 'center', opacity: 0.15 }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 0.15 }}
@@ -163,8 +168,8 @@ export default function Skills() {
         >
           SKILLS
         </motion.h2>
-        <motion.h3 
-          className="section-title" 
+        <motion.h3
+          className="section-title"
           style={{ textAlign: 'center', marginTop: '-3.5rem' }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -174,27 +179,27 @@ export default function Skills() {
           /TRACK SPECIALIZATION & SKILLS
         </motion.h3>
 
-        {/* Tab Filter */}
-        <motion.div 
-          className={styles.tabNav}
+        {/* ── Desktop tab filter ── */}
+        <motion.div
+          className={`${styles.tabNav} ${styles.desktopTabNav}`}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <button 
+          <button
             className={activeTab === 'all' ? `${styles.tabBtn} ${styles.active}` : styles.tabBtn}
             onClick={() => setActiveTab('all')}
           >
             <FiGrid size={16} /> All Tracks
           </button>
-          <button 
+          <button
             className={activeTab === 'fullstack' ? `${styles.tabBtn} ${styles.active}` : styles.tabBtn}
             onClick={() => setActiveTab('fullstack')}
           >
             <FiLayers size={16} /> Full Stack Track
           </button>
-          <button 
+          <button
             className={activeTab === 'ml' ? `${styles.tabBtn} ${styles.active}` : styles.tabBtn}
             onClick={() => setActiveTab('ml')}
           >
@@ -202,15 +207,33 @@ export default function Skills() {
           </button>
         </motion.div>
 
-        {/* Tracks Grid */}
-        <motion.div 
-          layout 
-          className={gridClassName}
+        {/* ── Mobile two-button segmented control ── */}
+        <div className={styles.mobileSegmented}>
+          <button
+            className={[styles.segBtn, activeTab === 'fullstack' && styles.segBtnActive].filter(Boolean).join(' ')}
+            onClick={() => setActiveTab(activeTab === 'fullstack' ? 'all' : 'fullstack')}
+            aria-pressed={activeTab === 'fullstack'}
+          >
+            <FiLayers size={15} /> Full Stack
+          </button>
+          <button
+            className={[styles.segBtn, activeTab === 'ml' && styles.segBtnActive].filter(Boolean).join(' ')}
+            onClick={() => setActiveTab(activeTab === 'ml' ? 'all' : 'ml')}
+            aria-pressed={activeTab === 'ml'}
+          >
+            <FiCpu size={15} /> ML Engineering
+          </button>
+        </div>
+
+        {/* ── Desktop tracks grid ── */}
+        <motion.div
+          layout
+          className={`${gridClassName} ${styles.desktopGrid}`}
           suppressHydrationWarning
         >
           <AnimatePresence mode="popLayout">
             {filteredTracks.map((track) => (
-              <motion.div 
+              <motion.div
                 key={track.trackId}
                 className={styles.trackCard}
                 layout
@@ -249,6 +272,57 @@ export default function Skills() {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* ── Mobile accordion layout ── */}
+        <div className={styles.mobileAccordion}>
+          {filteredTracks.map((track) => (
+            <div key={`mob-${track.trackId}`} className={styles.accordionTrack}>
+              <div className={styles.accordionTrackHeader}>
+                <div className={styles.iconCircle}>
+                  {track.trackId === 'ml' ? <FiCpu size={20} /> : <FiLayers size={20} />}
+                </div>
+                <div>
+                  <h4 className={styles.accordionTrackName}>{track.trackName}</h4>
+                  <span className={styles.trackSubtitle}>{track.subtitle}</span>
+                </div>
+              </div>
+
+              {track.categories.map((cat, catIdx) => {
+                const key = `${track.trackId}-${cat.id || catIdx}`;
+                const isOpen = openCategories.has(key);
+                return (
+                  <div key={key} className={styles.accordionItem}>
+                    <button
+                      className={styles.accordionHeader}
+                      onClick={() => toggleCategory(key)}
+                      aria-expanded={isOpen}
+                    >
+                      <div className={styles.accordionHeaderLeft}>
+                        <FiCode size={14} />
+                        <span>{cat.name}</span>
+                      </div>
+                      <FiChevronDown
+                        size={18}
+                        className={[styles.accordionChevron, isOpen ? styles.accordionChevronOpen : ''].filter(Boolean).join(' ')}
+                      />
+                    </button>
+
+                    {isOpen && (
+                      <div className={styles.accordionBody}>
+                        {cat.skills.map((skill, sIdx) => (
+                          <div key={`${key}-${skill}-${sIdx}`} className={styles.skillPill}>
+                            <FiCheckCircle size={13} />
+                            <span>{skill}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

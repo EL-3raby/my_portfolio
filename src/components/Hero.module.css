@@ -1,3 +1,4 @@
+/* ─── Desktop Hero ─────────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
   position: relative;
@@ -16,14 +17,6 @@
   width: 100%;
   text-align: center;
   pointer-events: none;
-}
-
-.titleBack {
-  z-index: 1; /* Behind image */
-}
-
-.titleFront {
-  z-index: 3; /* In front of image */
 }
 
 .hugeTitle {
@@ -94,12 +87,15 @@
   border-radius: 9999px;
   font-weight: 500;
   font-size: 0.95rem;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  border: 1px solid rgba(20, 184, 166, 0.6);
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.25);
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .collaborateBtn:hover {
   opacity: 0.9;
   transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(20, 184, 166, 0.4);
 }
 
 /* Profile Image */
@@ -156,62 +152,182 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
+.socialPill:active {
+  transform: scale(0.97);
+}
+
 @media (max-width: 1024px) {
   .hugeTitle {
     font-size: clamp(3rem, 10vw, 8rem);
     gap: 1rem;
   }
-  
+
   .textLeft {
     top: 50%;
   }
-  
+
   .socialRight {
     top: 50%;
   }
 }
 
+/* ─── Utility: desktop-only ────────────────────────────────────── */
+.desktopOnly {
+  display: block; /* or flex — set per-element overrides below */
+}
+
+.mobileLayout {
+  display: none;
+}
+
+/* ─── Mobile Hero ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero {
-    min-height: 120vh;
+    min-height: 100svh;
+    align-items: flex-start;
+    padding-top: 5.5rem;
+    padding-bottom: 4rem;
   }
-  
-  .titleContainer {
-    top: 15%;
+
+  /* Hide desktop layers */
+  .desktopOnly {
+    display: none !important;
   }
-  
-  .textLeft {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
-    margin: 30% auto 0;
-    text-align: center;
-    padding: 0 1rem;
+
+  /* Show mobile stack */
+  .mobileLayout {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 0 1.25rem;
+    width: 100%;
+    gap: 0;
   }
-  
-  .socialRight {
+
+  /* 1. Profile image with soft teal glow */
+  .mobileImageWrap {
+    width: 250px;
+    max-width: 75vw;
+    height: auto;
+    margin-bottom: 2rem;
     position: relative;
-    top: auto;
-    right: auto;
-    transform: none;
-    flex-direction: row;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mobileImageWrap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.35) 0%, rgba(13, 148, 136, 0.15) 50%, transparent 75%);
+    filter: blur(32px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .mobileProfileImage {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    object-fit: contain;
+    object-position: bottom center;
+    filter: drop-shadow(0 16px 32px rgba(0,0,0,0.18));
+  }
+
+  /* 2. Name display — consistently solid filled for both words */
+  .mobileName {
+    display: flex;
+    gap: 0.6rem;
+    font-size: clamp(2rem, 11vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.75rem;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 2rem;
-    padding: 0 1rem;
   }
-  
-  .imageCenter {
-    position: relative;
-    bottom: auto;
-    left: auto;
+
+  .mobileNameOutline {
+    color: var(--text-color);
+    -webkit-text-stroke: 0;
+  }
+
+  .mobileNameSolid {
+    color: var(--text-color);
+  }
+
+  /* 3. Role title + description */
+  .mobileTextBlock {
+    margin-bottom: 1.75rem;
+  }
+
+  .mobileTitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mobileDesc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* 4. CTA button with teal accent border & glow */
+  .mobileCollabBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    padding: 0.85rem 1.8rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    min-height: 50px;
+    border: 1px solid rgba(20, 184, 166, 0.6);
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.25);
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .mobileCollabBtn:active {
+    opacity: 0.85;
+    transform: scale(0.97);
+    box-shadow: 0 0 28px rgba(20, 184, 166, 0.4);
+  }
+
+  /* 5. Social pills row */
+  .mobileSocials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    padding-bottom: 1rem;
+  }
+
+  .mobileSocials .socialPill {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.82rem;
+    gap: 0.5rem;
+  }
+
+  .mobileSocials .socialPill:hover {
     transform: none;
-    margin-top: 2rem;
-    height: 400px;
-    width: 100%;
   }
 }

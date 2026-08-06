@@ -1,3 +1,4 @@
+/* ─── Desktop Navbar ──────────────────────────────────────────── */
 .navbar {
   position: fixed;
   top: 1.5rem;
@@ -25,15 +26,17 @@
   border-radius: 9999px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--glass-border);
+  min-height: unset; /* override global 44px on the container */
 }
 
 .statusDot {
   width: 8px;
   height: 8px;
-  background-color: #10b981; 
+  background-color: #10b981;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
   animation: pulse 2s infinite;
+  flex-shrink: 0;
 }
 
 .navCenter {
@@ -84,14 +87,215 @@
   opacity: 0.9;
 }
 
+/* ─── Hamburger button (mobile only) ─────────────────────────── */
+.hamburger {
+  display: none;
+  background-color: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  width: 48px;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.hamburger:active {
+  background-color: var(--glass-border);
+}
+
+/* ─── Full-screen Drawer ──────────────────────────────────────── */
+.drawerOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 190;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.drawerOverlayOpen {
+  opacity: 1;
+}
+
+.drawer {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(85vw, 340px);
+  height: 100dvh;
+  background-color: var(--card-bg);
+  border-left: 1px solid var(--glass-border);
+  z-index: 200;
+  padding: 2rem 1.75rem;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerClose {
+  align-self: flex-end;
+  background-color: var(--background-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  cursor: pointer;
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.drawerClose:active {
+  background-color: var(--glass-border);
+}
+
+.drawerStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  padding: 0.6rem 1rem;
+  background-color: var(--background-color);
+  border-radius: 9999px;
+  border: 1px solid var(--glass-border);
+  width: fit-content;
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--glass-border);
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+  letter-spacing: -0.02em;
+}
+
+.drawerOpen .drawerLink {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.drawerLink:active {
+  color: var(--text-muted);
+}
+
+.drawerLinkIndex {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  min-width: 24px;
+}
+
+.drawerLinkArrow {
+  margin-left: auto;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+/* ─── Floating Action Button (mobile only) ────────────────────── */
+.fab {
+  display: none;
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.25rem;
+  z-index: 150;
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  border-radius: 9999px;
+  padding: 0.85rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  gap: 0.45rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(20, 184, 166, 0.5);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  align-items: center;
+  min-height: 52px;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.fabVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.fabVisible:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+/* ─── Keyframes ───────────────────────────────────────────────── */
 @keyframes pulse {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
+/* ─── Mobile breakpoint ───────────────────────────────────────── */
 @media (max-width: 768px) {
-  .navCenter {
+  .navCenter,
+  .navRight {
     display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .drawerOverlay {
+    display: block;
+    pointer-events: none;
+  }
+
+  .drawerOverlayOpen {
+    pointer-events: auto;
+  }
+
+  .drawer {
+    display: flex;
+  }
+
+  .fab {
+    display: inline-flex;
   }
 }

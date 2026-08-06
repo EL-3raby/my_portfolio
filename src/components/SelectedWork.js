@@ -78,15 +78,15 @@ export default function SelectedWork() {
     }
   }, []);
 
-  const filteredProjects = activeFilter === 'All' 
-    ? projects.filter(p => p.isFeatured !== false).slice(0, 4) 
+  const filteredProjects = activeFilter === 'All'
+    ? projects.filter(p => p.isFeatured !== false).slice(0, 4)
     : projects.filter(p => p.category === activeFilter);
 
   return (
     <section className={styles.section} id="work">
       <div className={styles.container}>
-        <motion.h2 
-          className="heading-large heading-outline" 
+        <motion.h2
+          className="heading-large heading-outline"
           style={{ textAlign: 'center', opacity: 0.2 }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 0.2 }}
@@ -95,8 +95,8 @@ export default function SelectedWork() {
         >
           PORTFOLIO
         </motion.h2>
-        <motion.h3 
-          className="section-title" 
+        <motion.h3
+          className="section-title"
           style={{ textAlign: 'center', marginTop: '-3rem' }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -105,9 +105,10 @@ export default function SelectedWork() {
         >
           /SELECTED WORK
         </motion.h3>
-        
-        <motion.div 
-          className={styles.filterNav}
+
+        {/* ── Desktop filter nav ── */}
+        <motion.div
+          className={`${styles.filterNav} ${styles.desktopFilterNav}`}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -115,7 +116,7 @@ export default function SelectedWork() {
         >
           <div className={styles.filterLinks}>
             {['All', 'Full Stack', 'ML Engineering'].map((filter) => (
-              <button 
+              <button
                 key={filter}
                 className={activeFilter === filter ? styles.active : ''}
                 onClick={() => setActiveFilter(filter)}
@@ -126,12 +127,28 @@ export default function SelectedWork() {
           </div>
           <Link href="/work" className={styles.viewAll}>View All Work ↗</Link>
         </motion.div>
-        
-        <motion.div layout className={styles.grid}>
+
+        {/* ── Mobile filter: compact dropdown + view-all ── */}
+        <div className={styles.mobileFilterRow}>
+          <select
+            className={styles.mobileSelect}
+            value={activeFilter}
+            onChange={e => setActiveFilter(e.target.value)}
+            aria-label="Filter projects"
+          >
+            <option value="All">All Projects</option>
+            <option value="Full Stack">Full Stack</option>
+            <option value="ML Engineering">ML Engineering</option>
+          </select>
+          <Link href="/work" className={styles.mobileViewAll}>View All ↗</Link>
+        </div>
+
+        {/* ── Desktop grid ── */}
+        <motion.div layout className={`${styles.grid} ${styles.desktopGrid}`}>
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
               <Link href={`/work/${project.id}`} key={project.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <motion.div 
+                <motion.div
                   className={styles.card}
                   layout
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -141,14 +158,14 @@ export default function SelectedWork() {
                 >
                   <div className={styles.imageContainer}>
                     {project.coverImage || project.imageUrl ? (
-                      <img 
-                        src={project.coverImage || project.imageUrl} 
-                        alt={project.title} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      <img
+                        src={project.coverImage || project.imageUrl}
+                        alt={project.title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     ) : (
                       <div className={styles.imagePlaceholder}>
-                         <span>{project.title}</span>
+                        <span>{project.title}</span>
                       </div>
                     )}
                     <div className={styles.badge}>
@@ -167,6 +184,44 @@ export default function SelectedWork() {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* ── Mobile horizontal carousel ── */}
+        <div className={styles.mobileCarousel}>
+          {filteredProjects.map((project) => (
+            <Link
+              href={`/work/${project.id}`}
+              key={`m-${project.id}`}
+              className={styles.carouselSlide}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <div className={styles.card}>
+                <div className={styles.imageContainer}>
+                  {project.coverImage || project.imageUrl ? (
+                    <img
+                      src={project.coverImage || project.imageUrl}
+                      alt={project.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div className={styles.imagePlaceholder}>
+                      <span>{project.title}</span>
+                    </div>
+                  )}
+                  <div className={styles.badge}>
+                    {project.category?.toUpperCase() || 'FULL STACK'}
+                  </div>
+                </div>
+                <div className={styles.cardContent}>
+                  <h4>{project.title}</h4>
+                  <div className={styles.meta}>
+                    <span>{project.type}</span>
+                    <span>{project.tech}</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

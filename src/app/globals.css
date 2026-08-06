@@ -118,3 +118,28 @@ button {
   transform: scale(1.05);
   opacity: 0.9;
 }
+
+/* ─── Mobile-First Global Overrides ─────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 5rem 1.25rem;
+  }
+
+  .heading-large {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+    letter-spacing: -0.03em;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+
+  /* 44 px minimum touch targets for all interactive elements */
+  a,
+  button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
