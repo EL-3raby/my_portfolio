@@ -72,11 +72,12 @@ button {
 
 /* Typography Utilities */
 .heading-large {
-  font-size: clamp(4rem, 10vw, 8rem);
+  font-size: clamp(3rem, 7vw, 6.5rem);
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.05em;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
+  margin-bottom: 3rem;
 }
 
 .heading-outline {
@@ -89,11 +90,13 @@ button {
 }
 
 .section-title {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  color: var(--text-color);
   margin-bottom: 3rem;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .flex-center {
@@ -126,8 +129,10 @@ button {
   }
 
   .heading-large {
-    font-size: clamp(2.5rem, 14vw, 4rem);
-    letter-spacing: -0.03em;
+    font-size: clamp(2rem, 9vw, 3.2rem);
+    letter-spacing: -0.02em;
+    -webkit-text-stroke: 1.5px var(--text-color);
+    margin-bottom: 2rem;
   }
 
   .section-title {

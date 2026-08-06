@@ -160,24 +160,14 @@ export default function Skills() {
       <div className={styles.container}>
         <motion.h2
           className="heading-large heading-outline"
-          style={{ textAlign: 'center', opacity: 0.15 }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.15 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
-          SKILLS
-        </motion.h2>
-        <motion.h3
-          className="section-title"
-          style={{ textAlign: 'center', marginTop: '-3.5rem' }}
+          style={{ textAlign: 'center' }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          /TRACK SPECIALIZATION & SKILLS
-        </motion.h3>
+          SKILLS
+        </motion.h2>
 
         {/* ── Desktop tab filter ── */}
         <motion.div

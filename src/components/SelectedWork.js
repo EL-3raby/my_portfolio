@@ -161,24 +161,14 @@ export default function SelectedWork() {
       <div className={styles.container}>
         <motion.h2
           className="heading-large heading-outline"
-          style={{ textAlign: 'center', opacity: 0.2 }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.2 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
-          PORTFOLIO
-        </motion.h2>
-        <motion.h3
-          className="section-title"
-          style={{ textAlign: 'center', marginTop: '-3rem' }}
+          style={{ textAlign: 'center' }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          /SELECTED WORK
-        </motion.h3>
+          PORTFOLIO
+        </motion.h2>
 
         {/* ── Desktop filter nav ── */}
         <motion.div

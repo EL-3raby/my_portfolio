@@ -93,8 +93,7 @@ export default function Experience() {
           transition={{ duration: 0.6 }}
         >
           <div className={styles.leftCol}>
-            <h2 className="heading-large heading-outline" style={{ opacity: 0.15 }}>EXPERIENCE</h2>
-            <h3 className="section-title" style={{ marginTop: '-3.5rem' }}>/EXPERIENCE</h3>
+            <h2 className="heading-large heading-outline">EXPERIENCE</h2>
           </div>
           <div className={styles.rightCol}>
             <p>{settings.experienceBio || 'Over 2 years of experience in engineering digital products that solve complex problems and deliver real business value.'}</p>

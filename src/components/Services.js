@@ -81,24 +81,13 @@ export default function Services() {
       <div className={styles.container}>
         <motion.h2
           className="heading-large heading-outline"
-          style={{ opacity: 0.1 }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
-          SERVICES
-        </motion.h2>
-        <motion.h3
-          className="section-title"
-          style={{ marginTop: '-4rem' }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          /OUR SERVICES & TRACKS
-        </motion.h3>
+          SERVICES
+        </motion.h2>
 
         <div className={styles.list}>
           {services.map((service, index) => {
